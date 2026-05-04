@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whitetail Werks – Book Your Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #090909;
+    --deep: #111;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #6b541f;
+    --white: #f5f0e8;
+    --grey: #666;
+    --card: #131313;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+  }
+  body::after {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+    opacity: .18;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .topbar {
+    background: var(--gold);
+    padding: 9px 24px;
+    display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap;
+  }
+  .topbar a, .topbar span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .78rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--black); text-decoration: none;
+  }
+  .topbar-sep { opacity: .3; }
+
+  header {
+    text-align: center;
+    padding: 52px 20px 0;
+    position: relative;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 100% at 50% 0%, rgba(201,168,76,.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.2rem, 10vw, 7rem);
+    letter-spacing: .06em; line-height: .9;
+    color: var(--white);
+    animation: fadeDown .7s ease both;
+  }
+  .brand em { color: var(--gold); font-style: normal; }
+  .brand-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(.75rem, 2vw, 1rem);
+    letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold-dim); margin-top: 10px;
+    animation: fadeDown .7s .1s ease both;
+  }
+  .header-rule {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    margin: 28px auto 0;
+    animation: fadeDown .7s .2s ease both;
+  }
+
+  .choose {
+    padding: 32px 20px 0;
+    text-align: center;
+    animation: fadeDown .7s .25s ease both;
+  }
+  .choose-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .78rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .choose-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    letter-spacing: .06em; color: var(--white);
+  }
+
+  .packages {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3px; max-width: 900px;
+    margin: 28px auto 0; padding: 0 20px;
+    animation: fadeUp .7s .35s ease both;
+  }
+  .pkg {
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,.1);
+    padding: 40px 36px 36px;
+    position: relative; cursor: pointer;
+    transition: border-color .25s, transform .2s, background .25s;
+    display: flex; flex-direction: column;
+  }
+  .pkg:hover { border-color: rgba(201,168,76,.5); background: #181818; transform: translateY(-3px); }
+  .pkg-badge {
+    position: absolute; top: -1px; right: 24px;
+    background: var(--gold); color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .65rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+    padding: 4px 12px;
+  }
+  .pkg-icon { font-size: 2.2rem; margin-bottom: 16px; display: block; }
+  .pkg-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .05em; color: var(--white); margin-bottom: 4px;
+  }
+  .pkg-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.2rem; color: var(--gold); line-height: 1; margin-bottom: 24px;
+  }
+  .pkg-features { list-style: none; flex: 1; margin-bottom: 28px; }
+  .pkg-features li {
+    font-size: .92rem; color: rgba(245,240,232,.65);
+    padding: 7px 0; border-bottom: 1px solid rgba(201,168,76,.07);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .pkg-features li::before { content: '✦'; color: var(--gold); font-size: .5rem; margin-top: 5px; flex-shrink: 0; }
+  .pkg-btn {
+    display: block; width: 100%; padding: 15px;
+    background: transparent; border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    cursor: pointer; transition: background .2s, border-color .2s, color .2s;
+    text-align: center; text-decoration: none;
+  }
+  .pkg-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  .section-divider {
+    display: flex; align-items: center; gap: 20px;
+    max-width: 900px; margin: 60px auto 0; padding: 0 20px;
+  }
+  .section-divider::before, .section-divider::after {
+    content: ''; flex: 1; height: 1px; background: rgba(201,168,76,.15);
+  }
+  .section-divider span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .75rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold-dim); white-space: nowrap;
+  }
+
+  .addons-wrap {
+    max-width: 900px; margin: 0 auto; padding: 0 20px;
+    animation: fadeUp .7s .5s ease both;
+  }
+  .addons-label { text-align: center; margin-bottom: 6px; }
+  .addons-label h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    letter-spacing: .06em; color: var(--white);
+  }
+  .addons-label p { font-size: .85rem; color: var(--grey); margin-top: 4px; }
+  .addons-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 3px; margin-top: 20px;
+  }
+  .addon {
+    background: var(--card); border: 1px solid rgba(201,168,76,.08);
+    padding: 24px 14px; text-align: center;
+    transition: border-color .2s, background .2s, transform .15s;
+  }
+  .addon:hover { border-color: rgba(201,168,76,.4); background: #181818; transform: translateY(-2px); }
+  .addon-icon { font-size: 1.8rem; display: block; margin-bottom: 10px; }
+  .addon-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--white); line-height: 1.3; margin-bottom: 8px;
+  }
+  .addon-price { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--gold); }
+
+  .note {
+    max-width: 900px; margin: 24px auto 0; padding: 0 20px;
+  }
+  .note p {
+    background: #111; border-left: 3px solid var(--gold-dim);
+    padding: 14px 18px;
+    font-size: .83rem; color: var(--grey); line-height: 1.6;
+  }
+
+  footer {
+    margin-top: 70px; border-top: 1px solid rgba(201,168,76,.12);
+    padding: 36px 20px; text-align: center;
+  }
+  .footer-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: .1em; color: var(--gold); margin-bottom: 12px;
+  }
+  .footer-name span { color: var(--white); }
+  .footer-links {
+    display: flex; align-items: center; justify-content: center;
+    gap: 24px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--grey); text-decoration: none; transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: .78rem; color: rgba(245,240,232,.25); }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 680px) {
+    .packages { grid-template-columns: 1fr; max-width: 480px; }
+    .addons-grid { grid-template-columns: repeat(3, 1fr); }
+    .pkg { padding: 32px 24px 28px; }
+    header { padding: 40px 20px 0; }
+  }
+  @media (max-width: 420px) {
+    .addons-grid { grid-template-columns: 1fr 1fr; }
+    .topbar { gap: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="tel:6138791955">📞 613-879-1955</a>
+  <span class="topbar-sep">|</span>
+  <span>Almonte, Ontario</span>
+  <span class="topbar-sep">|</span>
+  <span>Weekends · Mobile Service</span>
+  <span class="topbar-sep">|</span>
+  <a href="https://instagram.com/whitetailwerks" target="_blank">@whitetailwerks</a>
+</div>
+
+<header>
+  <div class="brand"><em>Whitetail</em>Werks</div>
+  <div class="brand-sub">Premium Mobile Detailing · We Come to You</div>
+  <div class="header-rule"></div>
+</header>
+
+<div class="choose">
+  <div class="choose-label">Step 1 — Pick Your Package</div>
+  <div class="choose-title">Choose a Service &amp; Book Instantly</div>
+</div>
+
+<div class="packages">
+  <div class="pkg">
+    <span class="pkg-icon">🪑</span>
+    <div class="pkg-name">Interior Detail</div>
+    <div class="pkg-price">$125</div>
+    <ul class="pkg-features">
+      <li>Deep vacuum — seats, carpets, trunk</li>
+      <li>Full wipe down &amp; disinfect</li>
+      <li>Dash, vents &amp; cupholders cleaned</li>
+      <li>Interior shine finish</li>
+    </ul>
+    <a class="pkg-btn" href="https://calendly.com/fraz-t-mehmood/interior-detailing" target="_blank">
+      Book Interior Detail →
+    </a>
+  </div>
+
+  <div class="pkg">
+    <div class="pkg-badge">Most Popular</div>
+    <span class="pkg-icon">🚗</span>
+    <div class="pkg-name">Full Detail</div>
+    <div class="pkg-price">$180</div>
+    <ul class="pkg-features">
+      <li>Everything in Interior Detail</li>
+      <li>Full exterior wash &amp; dry</li>
+      <li>Door jambs cleaned</li>
+      <li>Interior shine + protection</li>
+      <li>Streak-free windows</li>
+    </ul>
+    <a class="pkg-btn" href="https://calendly.com/fraz-t-mehmood/full-detail" target="_blank">
+      Book Full Detail →
+    </a>
+  </div>
+</div>
+
+<div class="section-divider">
+  <span>Step 2 — Customize with Add-Ons</span>
+</div>
+
+<div class="addons-wrap">
+  <div class="addons-label">
+    <h3>Available Add-Ons</h3>
+    <p>Mention your add-on when booking — pricing confirmed at appointment</p>
+  </div>
+  <div class="addons-grid">
+    <div class="addon">
+      <span class="addon-icon">🧹</span>
+      <div class="addon-name">Seat / Carpet Shampoo</div>
+      <div class="addon-price">$40–$80</div>
+    </div>
+    <div class="addon">
+      <span class="addon-icon">🐾</span>
+      <div class="addon-name">Pet Hair Removal</div>
+      <div class="addon-price">+$25</div>
+    </div>
+    <div class="addon">
+      <span class="addon-icon">⚙️</span>
+      <div class="addon-name">Engine Bay Clean</div>
+      <div class="addon-price">$40</div>
+    </div>
+    <div class="addon">
+      <span class="addon-icon">💡</span>
+      <div class="addon-name">Headlight Restoration</div>
+      <div class="addon-price">$60</div>
+    </div>
+    <div class="addon">
+      <span class="addon-icon">✨</span>
+      <div class="addon-name">Clay Bar Treatment</div>
+      <div class="addon-price">$50</div>
+    </div>
+  </div>
+</div>
+
+<div class="note">
+  <p>⚠️ Prices may vary based on vehicle size and condition. Heavily soiled vehicles may require additional time and fees. We use premium products on every job.</p>
+</div>
+
+<footer>
+  <div class="footer-name">Whitetail<span>Werks</span></div>
+  <div class="footer-links">
+    <a href="tel:6138791955">613-879-1955</a>
+    <a href="mailto:ibrahimgondal547@gmail.com">Email Us</a>
+    <a href="https://instagram.com/whitetailwerks" target="_blank">Instagram</a>
+    <a href="https://facebook.com/Whitetailwerks" target="_blank">Facebook</a>
+  </div>
+  <div class="footer-copy">© 2025 Whitetail Werks Detailing · Almonte, Ontario</div>
+</footer>
+
+</body>
+</html>
